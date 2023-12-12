@@ -105,15 +105,8 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     visited = []
     solution = util.Stack()
-    
-    move_dict = {
-        'South': Directions.SOUTH,
-        'North': Directions.NORTH,
-        'East': Directions.EAST,
-        'West': Directions.WEST,
-    }
 
-    def dfs_search(problem, current_node, visited: list, solution: util.Stack):
+    def dfs_search(problem, current_node, visited, solution):
         visited.append(current_node[0])
         if problem.isGoalState(current_node[0]):
             solution.push(current_node)
@@ -139,7 +132,7 @@ def depthFirstSearch(problem):
     start_state = [problem.getStartState(), '', 0]
 
     dfs_search(problem, start_state, visited, solution)
-    path = [move_dict[i[1]] for i in solution.list if i[1] != '']
+    path = [i[1] for i in solution.list if i[1] != '']
     # print("Full maze:", visited)
     # print("Solution:", [i[0] for i in solution.list])
 
@@ -156,13 +149,6 @@ def breadthFirstSearch(problem):
 
     # visited.append(start_state[0])
     queue.push(start_state)
-
-    move_dict = {
-        'South': Directions.SOUTH,
-        'North': Directions.NORTH,
-        'East': Directions.EAST,
-        'West': Directions.WEST,
-    }
 
     def bfs_search(problem, queue, solution, path):
         if queue.isEmpty():
