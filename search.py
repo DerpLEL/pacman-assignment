@@ -151,10 +151,10 @@ def breadthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     visited = []
     queue = util.Queue()
-    solution = util.Queue()
+    solution = util.Stack()
     start_state = [problem.getStartState(), '', 0]
 
-    visited.append(start_state[0])
+    # visited.append(start_state[0])
     queue.push(start_state)
 
     move_dict = {
@@ -165,25 +165,61 @@ def breadthFirstSearch(problem):
     }
 
     path = []
-    while queue.list:
+    # while queue.list:
+    #     current_node = queue.pop()
+    #     if problem.isGoalState(current_node[0]):
+    #         break
+    #
+    #     neighbors = problem.getSuccessors(current_node[0])
+    #
+    #     for i in neighbors:
+    #         if i[0] not in visited:
+    #             visited.append(i[0])
+    #             queue.push(i)
+    #             solution.push(path + [i])
+    #
+    #     path = solution.pop()
+    #
+    # paths = [move_dict[i[1]] for i in path]
+    #
+    # return paths
+
+    def bfs_search(problem, queue, solution):
+        if queue.isEmpty():
+            return 0
+
         current_node = queue.pop()
+        visited.append(current_node[0])
+
         if problem.isGoalState(current_node[0]):
-            break
+            return 1
 
         neighbors = problem.getSuccessors(current_node[0])
+        # print(neighbors)
 
+        if not neighbors:
+            return -1
+
+        solution.push(current_node)
+        # print(solution.list)
         for i in neighbors:
             if i[0] not in visited:
-                visited.append(i[0])
                 queue.push(i)
-                solution.push(path + [i])
 
-        path = solution.pop()
+        status = bfs_search(problem, queue, solution)
+        if status == -1:
+            solution.pop()
 
-    paths = [move_dict[i[1]] for i in path]
+        elif status == 1:
+            return 1
 
-    return paths
+        solution.pop()
 
+    bfs_search(problem, queue, solution)
+
+    print(solution.list)
+    moves = [i[1] for i in solution.list if i[1] != '']
+    return moves
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
