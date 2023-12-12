@@ -106,7 +106,7 @@ def depthFirstSearch(problem):
     visited = []
     solution = util.Stack()
 
-    def dfs_search(problem, current_node, visited, solution):
+    def dfs_search(problem, current_node, visited, solution: util.Stack):
         visited.append(current_node[0])
         if problem.isGoalState(current_node[0]):
             solution.push(current_node)
@@ -150,7 +150,7 @@ def breadthFirstSearch(problem):
     # visited.append(start_state[0])
     queue.push(start_state)
 
-    def bfs_search(problem, queue, solution, path):
+    def bfs_search(problem, queue: util.Queue, solution: util.Queue, path):
         if queue.isEmpty():
             return path
 
@@ -182,40 +182,38 @@ def uniformCostSearch(problem):
     solution = util.PriorityQueue()
     start_state = [problem.getStartState(), '', 0]
 
-    visited.append(start_state[0])
+    # visited.append(start_state[0])
     queue.push(start_state, 0)
 
-    move_dict = {
-        'South': Directions.SOUTH,
-        'North': Directions.NORTH,
-        'East': Directions.EAST,
-        'West': Directions.WEST,
-    }
+    def ucs_search(problem, queue: util.PriorityQueue, solution: util.PriorityQueue, path):
+        if queue.isEmpty():
+            return path
 
-    path = []
-    while queue.heap:
         current_node = queue.pop()
+        visited.append(current_node[0])
+
         if problem.isGoalState(current_node[0]):
-            break
+            return path
 
         neighbors = problem.getSuccessors(current_node[0])
+        # print(neighbors)
 
         for i in neighbors:
             if i[0] not in visited:
-                visited.append(i[0])
                 path_temp = path + [i]
-                moves = [move_dict[i[1]] for i in path_temp]
-                cost = problem.getCostOfActions(moves)
+                cost = problem.getCostOfActions([i[1] for i in path_temp])
 
                 queue.push(i, cost)
                 solution.push(path_temp, cost)
 
-        path = solution.pop()
+        return ucs_search(problem, queue, solution, solution.pop())
 
-    paths = [move_dict[i[1]] for i in path]
-    print(paths)
+    thingy = ucs_search(problem, queue, solution, [])
 
-    return paths
+    moves = [i[1] for i in thingy]
+    print(moves)
+
+    return moves
     # raise Exception("Lmao")
 
 
