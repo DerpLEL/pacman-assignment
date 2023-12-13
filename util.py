@@ -218,7 +218,7 @@ class PriorityQueueWithFunction(PriorityQueue):
         self.priorityFunction = priorityFunction      # store the priority function
         PriorityQueue.__init__(self)        # super-class initializer
 
-    def push(self, item):
+    def push(self, item, priority=None):
         "Adds an item to the queue with priority from the priority function"
         PriorityQueue.push(self, item, self.priorityFunction(item))
 
