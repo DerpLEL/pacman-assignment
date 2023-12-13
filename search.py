@@ -16,7 +16,7 @@
 In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
-
+from math import sqrt
 import util
 from game import Directions
 
@@ -223,7 +223,10 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-def aStarSearch(problem, heuristic=nullHeuristic):
+def euclideanHeuristic(state, goal_state):
+    return sqrt((state[0] - goal_state[0]) ** 2 + (state[1] - goal_state[1]) ** 2)
+
+def aStarSearch(problem, heuristic=euclideanHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     visited = []
@@ -239,14 +242,27 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     cost_to_node = dict()
     cost_to_node[start_state] = 0
 
+    goal_node_coords = problem.goal
     goal_node = None
     while not queue.isEmpty():
-        pass
+        current_node = queue.pop()
+
+        if problem.isGoalState(current_node[0]):
+            goal_node = current_node
+            break
+
+        for i in problem.getSuccessors(current_node[0]):
+            new_cost = cost_to_node[current_node] + i[2]
+            if i not in cost_to_node or new_cost < cost_to_node[i]:
+                cost_to_node[i] = new_cost
+                queue.push(i, new_cost + heuristic(i[0], goal_node_coords))
+                parent_node[i] = current_node
 
     thingy = []
     current_node = goal_node
     while current_node != start_state:
-        pass
+        thingy.append(current_node)
+        current_node = parent_node[current_node]
 
     moves = [i[1] for i in thingy[::-1] if i[1] != '']
     print(moves)
