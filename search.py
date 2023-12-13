@@ -225,11 +225,6 @@ def nullHeuristic(state, problem=None):
     return 0
 
 
-def euclideanHeuristic(state, problem):
-    goal_state = problem.goal
-    return sqrt((state[0] - goal_state[0]) ** 2 + (state[1] - goal_state[1]) ** 2)
-
-
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
