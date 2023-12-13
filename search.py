@@ -175,6 +175,7 @@ def breadthFirstSearch(problem):
     moves = [i[1] for i in thingy[::-1] if i[1] != '']
     return moves
 
+
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
@@ -223,9 +224,11 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+
 def euclideanHeuristic(state, problem):
     goal_state = problem.goal
     return sqrt((state[0] - goal_state[0]) ** 2 + (state[1] - goal_state[1]) ** 2)
+
 
 def aStarSearch(problem, heuristic=euclideanHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
