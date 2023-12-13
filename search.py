@@ -223,7 +223,8 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
-def euclideanHeuristic(state, goal_state):
+def euclideanHeuristic(state, problem):
+    goal_state = problem.goal
     return sqrt((state[0] - goal_state[0]) ** 2 + (state[1] - goal_state[1]) ** 2)
 
 def aStarSearch(problem, heuristic=euclideanHeuristic):
@@ -242,7 +243,6 @@ def aStarSearch(problem, heuristic=euclideanHeuristic):
     cost_to_node = dict()
     cost_to_node[start_state] = 0
 
-    goal_node_coords = problem.goal
     goal_node = None
     while not queue.isEmpty():
         current_node = queue.pop()
@@ -255,7 +255,7 @@ def aStarSearch(problem, heuristic=euclideanHeuristic):
             new_cost = cost_to_node[current_node] + i[2]
             if i not in cost_to_node or new_cost < cost_to_node[i]:
                 cost_to_node[i] = new_cost
-                queue.push(i, new_cost + heuristic(i[0], goal_node_coords))
+                queue.push(i, new_cost + heuristic(i[0], problem))
                 parent_node[i] = current_node
 
     thingy = []
