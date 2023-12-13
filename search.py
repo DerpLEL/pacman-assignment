@@ -230,9 +230,7 @@ def euclideanHeuristic(state, problem):
 def aStarSearch(problem, heuristic=euclideanHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    visited = []
     queue = util.PriorityQueue()
-    # solution = util.PriorityQueue()
     start_state = (problem.getStartState(), '', 0)
 
     # visited.append(start_state[0])
