@@ -144,73 +144,72 @@ def breadthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     visited = []
     queue = util.Queue()
-    solution = util.Queue()
-    start_state = [problem.getStartState(), '', 0]
+    start_state = (problem.getStartState(), '', 0)
 
     # visited.append(start_state[0])
     queue.push(start_state)
 
-    def bfs_search(problem, queue: util.Queue, solution: util.Queue, path):
-        if queue.isEmpty():
-            return path
+    parent_node = dict()
+    parent_node[start_state] = None
 
+    goal_node = None
+    while not queue.isEmpty():
         current_node = queue.pop()
         visited.append(current_node[0])
+
         if problem.isGoalState(current_node[0]):
-            return path
+            goal_node = current_node
+            break
 
-        neighbors = problem.getSuccessors(current_node[0])
-        # print(neighbors)
-
-        for i in neighbors:
+        for i in problem.getSuccessors(current_node[0]):
             if i[0] not in visited:
                 queue.push(i)
-                solution.push(path + [i])
+                parent_node[i] = current_node
 
-        return bfs_search(problem, queue, solution, solution.pop())
+    thingy = []
+    current_node = goal_node
+    while current_node != start_state:
+        thingy.append(current_node)
+        current_node = parent_node[current_node]
 
-    thingy = bfs_search(problem, queue, solution, [])
-
-    moves = [i[1] for i in thingy if i[1] != '']
+    moves = [i[1] for i in thingy[::-1] if i[1] != '']
     return moves
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    visited = []
     queue = util.PriorityQueue()
-    solution = util.PriorityQueue()
-    start_state = [problem.getStartState(), '', 0]
+    start_state = (problem.getStartState(), '', 0)
 
-    # visited.append(start_state[0])
     queue.push(start_state, 0)
 
-    def ucs_search(problem, queue: util.PriorityQueue, solution: util.PriorityQueue, path):
-        if queue.isEmpty():
-            return path
+    parent_node = dict()
+    parent_node[start_state] = None
+    cost_to_node = dict()
+    cost_to_node[start_state] = 0
 
+    goal_node = None
+    while not queue.isEmpty():
         current_node = queue.pop()
-        visited.append(current_node[0])
 
         if problem.isGoalState(current_node[0]):
-            return path
+            goal_node = current_node
+            break
 
-        neighbors = problem.getSuccessors(current_node[0])
-        # print(neighbors)
+        for i in problem.getSuccessors(current_node[0]):
+            new_cost = cost_to_node[current_node] + i[2]
+            if i not in cost_to_node or new_cost < cost_to_node[i]:
+                cost_to_node[i] = new_cost
+                queue.push(i, new_cost)
+                parent_node[i] = current_node
 
-        for i in neighbors:
-            if i[0] not in visited:
-                path_temp = path + [i]
-                cost = problem.getCostOfActions([i[1] for i in path_temp])
+    thingy = []
+    current_node = goal_node
+    while current_node != start_state:
+        thingy.append(current_node)
+        current_node = parent_node[current_node]
 
-                queue.push(i, cost)
-                solution.push(path_temp, cost)
-
-        return ucs_search(problem, queue, solution, solution.pop())
-
-    thingy = ucs_search(problem, queue, solution, [])
-
-    moves = [i[1] for i in thingy]
+    moves = [i[1] for i in thingy[::-1] if i[1] != '']
     print(moves)
 
     return moves
@@ -227,7 +226,32 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    raise Exception("Lmao")
+    visited = []
+    queue = util.PriorityQueue()
+    # solution = util.PriorityQueue()
+    start_state = (problem.getStartState(), '', 0)
+
+    # visited.append(start_state[0])
+    queue.push(start_state, 0)
+
+    parent_node = dict()
+    parent_node[start_state] = None
+    cost_to_node = dict()
+    cost_to_node[start_state] = 0
+
+    goal_node = None
+    while not queue.isEmpty():
+        pass
+
+    thingy = []
+    current_node = goal_node
+    while current_node != start_state:
+        pass
+
+    moves = [i[1] for i in thingy[::-1] if i[1] != '']
+    print(moves)
+
+    return moves
 
 
 # Abbreviations
