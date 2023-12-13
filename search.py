@@ -152,13 +152,13 @@ def breadthFirstSearch(problem):
     parent_node = dict()
     parent_node[start_state] = None
 
-    goal_node = None
+    goal_node = []
     while not queue.isEmpty():
         current_node = queue.pop()
         visited.append(current_node[0])
 
         if problem.isGoalState(current_node[0]):
-            goal_node = current_node
+            goal_node.append(current_node)
             break
 
         for i in problem.getSuccessors(current_node[0]):
@@ -167,10 +167,19 @@ def breadthFirstSearch(problem):
                 parent_node[i] = current_node
 
     thingy = []
-    current_node = goal_node
-    while current_node != start_state:
-        thingy.append(current_node)
-        current_node = parent_node[current_node]
+    if len(goal_node) == 1:
+        current_node = goal_node
+        while current_node != start_state:
+            thingy.append(current_node)
+            current_node = parent_node[current_node]
+
+    else:
+        for i in goal_node[::-1]:
+            if i == goal_node[-1]:
+                start = start_state
+
+            else:
+                start = i
 
     moves = [i[1] for i in thingy[::-1] if i[1] != '']
     return moves
