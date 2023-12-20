@@ -288,6 +288,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.lmao = 0
 
     def getStartState(self):
         """
@@ -296,17 +297,14 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
         # util.raiseNotDefined()
-        return self.startingPosition
+        return (self.startingPosition, self.corners)
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        if state in self.corners:
-            return True
-
-        return False
+        return (state[0],) == state[1]
         # util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -321,6 +319,10 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
+        pos = state[0]
+        remaining_corners = state[1]
+        # print(f"{pos = } | {remaining_corners = }")
+
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -328,7 +330,7 @@ class CornersProblem(search.SearchProblem):
             #   dx, dy = Actions.directionToVector(action)
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
-            x, y = state
+            x, y = pos
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             hitsWall = self.walls[nextx][nexty]
@@ -337,7 +339,10 @@ class CornersProblem(search.SearchProblem):
                 continue
 
             coords = (nextx, nexty)
-            successors.append((coords, action, 1))
+            new_remaining_corners = tuple(i for i in remaining_corners if i != pos)
+
+            state_thingy = (coords, new_remaining_corners)
+            successors.append((state_thingy, action, 1))
             "*** YOUR CODE HERE ***"
 
         self._expanded += 1 # DO NOT CHANGE

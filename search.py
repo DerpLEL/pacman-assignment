@@ -175,6 +175,7 @@ def breadthFirstSearch(problem):
         current_node = parent_node[current_node]
 
     moves = [i for i in thingy[::-1] if i != '']
+    # pprint(moves)
     return moves
 
 
