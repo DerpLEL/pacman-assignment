@@ -361,15 +361,17 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
-def manhattanCorners(pos, remaining_corners):
+def manhattanCorners(pos, corners):
     lowest = 999999
+    closest_corner = None
 
-    for i in remaining_corners:
+    for i in corners:
         dist = abs(pos[0] - i[0]) + abs(pos[1] - i[1])
         if dist < lowest:
+            closest_corner = i
             lowest = dist
 
-    return lowest if lowest != 999999 else 0
+    return lowest, closest_corner
 
 
 def cornersHeuristic(state, problem):
@@ -388,8 +390,17 @@ def cornersHeuristic(state, problem):
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    return manhattanCorners(state[0], state[1])
+    pos = state[0]
+    remaining_corners = list(state[1])
+    heuristic = 0
 
+    while remaining_corners:
+        current_heuristic, closest_corner = manhattanCorners(pos, remaining_corners)
+        heuristic += current_heuristic
+        pos = closest_corner
+        remaining_corners.remove(closest_corner)
+
+    return heuristic
     "*** YOUR CODE HERE ***"
     return 0 # Default to trivial solution
 
