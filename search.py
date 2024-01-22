@@ -214,7 +214,7 @@ def uniformCostSearch(problem):
         current_node = parent_node[current_node]
 
     moves = [i[1] for i in thingy[::-1] if i[1] != '']
-    print(moves)
+    # print(moves)
 
     return moves
     # raise Exception("Lmao")
@@ -264,7 +264,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         current_node = parent_node[current_node]
 
     moves = [i[1] for i in thingy[::-1] if i[1] != '']
-    print(moves)
+    # print(moves)
 
     return moves
 
